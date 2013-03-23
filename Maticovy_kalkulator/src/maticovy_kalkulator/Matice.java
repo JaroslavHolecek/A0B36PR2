@@ -4,6 +4,12 @@
  */
 package maticovy_kalkulator;
 
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+
+
 /**
  *
  * @author Jarda
@@ -109,6 +115,14 @@ public class Matice {// Trida reprezentujici jednotlive matice a metody, ktere l
         return vysledek;
     }
     
+    public boolean stavDeterminant(){
+        if (this.radky > 4){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    
     public double determinant() {//Vrati determinant matice, pro singularni, nebo obdelnikovou matici vrati 0
         double determinant = 0;
         double pom;//pomocna promena
@@ -116,7 +130,7 @@ public class Matice {// Trida reprezentujici jednotlive matice a metody, ktere l
         double pamet1;//pomocna promena
         double pamet2;//pomocna promena
 
-        if ((this.radky != this.sloupce) || this.radky == 0 || this.sloupce == 0) {//Pokud je matice obdelnikoa, nebo s nulovym poctem radku nebo sloupcu vrati 0
+        if ((this.radky != this.sloupce) ) {//Pokud je matice obdelnikova vrati 0
             determinant = 0;
         } else {
             for (int i = 0; i < this.sloupce; i++) {//Prochazeni prvniho radku
@@ -365,6 +379,23 @@ public class Matice {// Trida reprezentujici jednotlive matice a metody, ktere l
             }
             return invers;
         }
+    
+    public void ulozMatici(String nazev) throws IOException {
+             FileOutputStream fos = new FileOutputStream(nazev +".txt"); 
+             DataOutputStream dos = new DataOutputStream(fos); 
+        
+             dos.writeInt(this.radky);//Ulozi Matici jako dva Integery (Sloupce a Radky) a Sloupce*Radky Doubleu
+             dos.writeInt(this.sloupce);
+             
+             for(int i = 0;i < this.radky;i++){
+                 for(int j = 0;j < this.sloupce;j++){
+                     dos.writeDouble(this.matice[i][j]);
+                 }
+             }
+                                 
+             dos.close();
+             fos.close();
+    }
     
     
 }
