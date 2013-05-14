@@ -30,7 +30,6 @@ public class Seznam {
     
     public Seznam(){
         this.velikost = 0;
-        
         this.prvni.dalsi = this.posledni;
         this.posledni.predchozi = this.prvni;
     }
@@ -44,38 +43,50 @@ public class Seznam {
         velikost++;
     }
     
-    public void smazMatici(int ktera){
+    public void smazMatici (int ktera) throws Exception{
+                
         Prvek pom1 = prvni;
         Prvek pom2;
-        
-        for(int i = 0; i < ktera - 1; i++){
-            pom1 = pom1.dalsi;
+        try{
+        if(ktera < 0){
+            throw new SeznamoveVyjimky(ktera, this, String.format("Matice jsou v seznamu cislovany prirozenymi cisly od 1 %n Vase volba %.0f", ktera));
+        }else if(ktera > this.getVelikost()){
+            throw new SeznamoveVyjimky(ktera, this, String.format("Zadana pozice %.0f je mimo rozsah. V seznamu je %.0f matic", ktera, this.getVelikost()));
+        }else{
+            for(int i = 0; i < ktera - 1; i++){
+                pom1 = pom1.dalsi;
+            }
+            pom2 = pom1.dalsi.dalsi;
+            pom2.predchozi = pom1;
+            pom1.dalsi = pom2;
         }
-        
-        pom2 = pom1.dalsi.dalsi;
-        
-        pom2.predchozi = pom1;
-        pom1.dalsi = pom2;
+        }catch(SeznamoveVyjimky a){
+            
+        }
     }
     
     public int getVelikost(){//Vraci mnozstvi Prvku v seznamu (bez prvniho a posledniho
         return this.velikost;
     }
     
-    public Matice getMatice(int ktery) {
-        if(ktery > this.velikost || ktery <= 0){
-           return new Matice(0,0);            
-        
-        }
-        
+    public Matice getMatice(int ktera) throws Exception {
+                
         Prvek aktualni = this.prvni;
         
-        for(int i = 0; i < ktery; i++){
+        try{
+        if(ktera < 0){
+            throw new SeznamoveVyjimky(ktera, this, String.format("Matice jsou v seznamu cislovany prirozenymi cisly od 1 %n Vase volba %.0f", ktera));
+        }else if(ktera > this.getVelikost()){
+            throw new SeznamoveVyjimky(ktera, this, String.format("Zadana pozice %.0f je mimo rozsah. V seznamu je %.0f matic", ktera, this.getVelikost()));
+        }else{
+        for(int i = 0; i < ktera; i++){
             aktualni = aktualni.dalsi;
         }
-        
         return aktualni.matice;
-       
+        }
+        }catch(SeznamoveVyjimky a){
+            return new Matice(0,0);
+        }
     }
     
 }
