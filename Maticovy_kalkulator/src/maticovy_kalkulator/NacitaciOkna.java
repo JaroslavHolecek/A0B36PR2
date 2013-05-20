@@ -4,7 +4,6 @@
  */
 package maticovy_kalkulator;
 
-
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -13,34 +12,24 @@ import javax.swing.JTextField;
  *
  * @author Jarda
  */
-public class NacitaciOkna extends JTextField {
-        
-    public NacitaciOkna(){
-     super("0");   
+public class NacitaciOkna extends JTextField {//Okna do kterych uzivatel zadava udaje
+
+    public NacitaciOkna() {
+        super("0");
     }
-    
-    public int toInt() throws JTextFieldVyjimky{
+
+    public int toInt() throws JTextFieldVyjimky {//Vraci udaj v okne
         String s = this.getText();
-        try{
+        try {
             int i = Integer.parseInt(s);
-            if(Integer.parseInt(s)<0){
+            if (Integer.parseInt(s) < 0) {
                 throw new JTextFieldVyjimky(String.format("Zadano zaporne cislo. %nVase zadani: " + this.getText()));
             }
-        
+
             return i;
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             throw new JTextFieldVyjimky(String.format("Nezadano prirozene cislo. %nVase zadani: " + this.getText()));
         }
-               
-    }
-    
-    public double toDouble() throws JTextFieldVyjimky{
-        String s = this.getText();
-        try{
-            double d = Double.parseDouble(s);
-            return d;
-        }catch(NumberFormatException e){
-            throw new JTextFieldVyjimky("Nezadano cislo.");
-        }
+
     }
 }
