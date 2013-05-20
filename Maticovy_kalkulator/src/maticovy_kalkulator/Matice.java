@@ -4,11 +4,12 @@
  */
 package maticovy_kalkulator;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-
 
 /**
  *
@@ -16,7 +17,7 @@ import java.io.IOException;
  */
 public class Matice {// Trida reprezentujici jednotlive matice a metody, ktere lze s maticemi provadet
 // Oznacene radky je treba prepsat pro pouziti v grafickem prostredi    
-    
+
     private int radky;// Pocet radku matice
     private int sloupce;// Pocet sloupcu matice
     private double[][] matice;// Reprezentace samotne matice 
@@ -26,7 +27,7 @@ public class Matice {// Trida reprezentujici jednotlive matice a metody, ktere l
         this.sloupce = Math.abs(sloupce);
         this.matice = new double[this.radky][this.sloupce];
     }
-    
+
     public void setCislo(double cislo, int radek, int sloupec) {//Nastavi cislo na zadane souradnice
         if ((radek < 0 || radek >= this.radky) || (sloupec < 0 || sloupec >= this.sloupce)) {
             System.out.println("Zadana pozice je mimo rozsah.");
@@ -34,7 +35,7 @@ public class Matice {// Trida reprezentujici jednotlive matice a metody, ktere l
             this.matice[radek][sloupec] = cislo;
         }
     }
-    
+
     public int getRadky() {//Vrati pocet radku matice
         return this.radky;
     }
@@ -46,42 +47,42 @@ public class Matice {// Trida reprezentujici jednotlive matice a metody, ktere l
     public double getCislo(int radek, int sloupec) {//Vrati cislo na zadane pozici
         if (radek < 0 || radek >= this.radky || sloupec < 0 || sloupec >= this.sloupce) {//Pokud je zadana pozice mimo matici vrati NaN a vypise chybovou hlasku
             System.out.println("Zadana pozice je mimo rozsah matice.");
-            return (double)0/0;
+            return (double) 0 / 0;
         }
         return this.matice[radek][sloupec];
     }
-    
+
     public Matice getMatice() {// Vrati kompetni matici
         return this;
     }
-    
+
     public String toString(int desMista) {//Prevede matici na String
         String s = new String();
         if (this.radky == 0 || this.sloupce == 0) {//Pokud ma matice nulovy pocet radku, nebo sloupcu vypise se chybova hlaska
-           s = "Nic k vypsani";
-           return s;
+            s = "Nic k vypsani";
+            return s;
         } else {
             for (int i = 0; i < this.radky; i++) {//Prochazi matici
                 for (int j = 0; j < this.sloupce; j++) {
-                    s += String.format("%."+desMista+"f", this.matice[i][j]);
-                    if(j++ < this.sloupce){// Jeslize je cislo posledni na redku nevypise se za nim mezera
+                    s += String.format("%." + desMista + "f", this.matice[i][j]);
+                    if (j + 1 < this.sloupce) {// Jeslize je cislo posledni na redku nevypise se za nim mezera
                         s += " ";
                     }
                 }
                 s += String.format("%n");//Odradkuje radek matice
             }
-     return s;
+            return s;
         }
     }
-    
-    public boolean stavScitani(Matice a){// True jestlize jde matice secit jinak false
-        if(this.radky == a.radky && this.sloupce == a.sloupce){
+
+    public boolean stavScitani(Matice a) {// True jestlize jde matice secit jinak false
+        if (this.radky == a.radky && this.sloupce == a.sloupce) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    
+
     public Matice secti(Matice a) {//Secte dve matice
         Matice vysledek = new Matice(this.radky, this.sloupce);
         for (int i = 0; i < this.radky; i++) {//Prochazi matice a scita jejich cleny
@@ -91,15 +92,25 @@ public class Matice {// Trida reprezentujici jednotlive matice a metody, ktere l
         }
         return vysledek;
     }
-    
-    public boolean stavNasobeni(Matice a){
-        if(this.sloupce == a.radky){
+
+    public Matice odecti(Matice a) {//Odecte dve matice
+        Matice vysledek = new Matice(this.radky, this.sloupce);
+        for (int i = 0; i < this.radky; i++) {//Prochazi matice a scita jejich cleny
+            for (int j = 0; j < this.radky; j++) {
+                vysledek.matice[i][j] = this.matice[i][j] - a.matice[i][j];
+            }
+        }
+        return vysledek;
+    }
+
+    public boolean stavNasobeni(Matice a) {
+        if (this.sloupce == a.radky) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    
+
     public Matice vynasobZprava(Matice a) {//Vynasobi matici Matici v argumentu zprava
         Matice vysledek = new Matice(this.radky, a.sloupce);//Vysledna matice
         double mezivysledek = 0;//Pomocna promena
@@ -114,15 +125,15 @@ public class Matice {// Trida reprezentujici jednotlive matice a metody, ktere l
         }
         return vysledek;
     }
-    
-    public boolean stavDeterminant(){
-        if (this.radky > 4){
+
+    public boolean stavDeterminant() {
+        if (this.radky > 4) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
-    
+
     public double determinant() {//Vrati determinant matice, pro singularni, nebo obdelnikovou matici vrati 0
         double determinant = 0;
         double pom;//pomocna promena
@@ -130,7 +141,7 @@ public class Matice {// Trida reprezentujici jednotlive matice a metody, ktere l
         double pamet1;//pomocna promena
         double pamet2;//pomocna promena
 
-        if ((this.radky != this.sloupce) ) {//Pokud je matice obdelnikova vrati 0
+        if ((this.radky != this.sloupce)) {//Pokud je matice obdelnikova vrati 0
             determinant = 0;
         } else {
             for (int i = 0; i < this.sloupce; i++) {//Prochazeni prvniho radku
@@ -210,7 +221,7 @@ public class Matice {// Trida reprezentujici jednotlive matice a metody, ktere l
         }
         return determinant;
     }
-    
+
     public void transponuj() {//Ztransponuje matici
         Matice pom = new Matice(this.sloupce, this.radky);//Vytvori pomocnou matici
         int pom1;
@@ -223,13 +234,13 @@ public class Matice {// Trida reprezentujici jednotlive matice a metody, ktere l
         this.radky = this.sloupce;
         this.sloupce = pom1;
         this.matice = new double[pom.getRadky()][pom.getSloupce()];
-        for(int i=0;i<this.getRadky();i++){// Nastavi pomocnou jako matici this
-            for(int j=0;j<this.getSloupce();j++){
+        for (int i = 0; i < this.getRadky(); i++) {// Nastavi pomocnou jako matici this
+            for (int j = 0; j < this.getSloupce(); j++) {
                 this.setCislo(pom.getCislo(i, j), i, j);
             }
         }
     }
-    
+
     public void odstranRadek(int ktery) {//Odstrani z matice zadany radek(tj. matice ma o jeden radek mene
 
         if (ktery < 0 || ktery >= this.radky) {// Zkontroluje, zda je zadany radek v matici
@@ -296,15 +307,15 @@ public class Matice {// Trida reprezentujici jednotlive matice a metody, ktere l
     public void gauss() {//Upravy matici do doniho trojuhelnikoveho tvaru s 1 na hlavni diagonale
 
 
-        
+
         for (int i = 0; i < this.radky; i++) {//Prochazeni matice
 
-            if(i==0){
+            if (i == 0) {
                 while (najdiNulovy() != -1) {//Hleda a odstranuje nulove radky
-                odstranRadek(najdiNulovy());
+                    odstranRadek(najdiNulovy());
                 }
             }
-            
+
 
             for (int k = 1; k + i < this.radky; k++) {//Pokud je na hlavni diagonale 0, prohodi tento radek s nasledujicim
                 if (this.matice[i][i] == 0) {
@@ -316,86 +327,108 @@ public class Matice {// Trida reprezentujici jednotlive matice a metody, ktere l
 
             if (this.matice[i][i] != 1) {//Upravy radek tak, aby na hlavni diagonale byla 1
                 vynasobRadek(1 / this.matice[i][i], i);
-                
+
             }
-            
+
             for (int j = 1; i + j < this.radky; j++) {//Upravy kazdy radek pod stavajicim tak, ze pod prvnim nenulovym cislem na stavajicim radku je 0
-                    prictiNasobekRadku(-this.matice[i + j][i], i, i + j);
-                }
-            
+                prictiNasobekRadku(-this.matice[i + j][i], i, i + j);
+            }
+
             while (najdiNulovy() != -1) {//Hleda a odstranuje nulove radky
                 odstranRadek(najdiNulovy());
-                
+
             }
         }
 
     }
-    
-    public boolean stavInversni(){
-        if(this.determinant() == 0){
+
+    public boolean stavInversni() {
+        if (this.determinant() == 0) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
-    
+
     public Matice inversni() {//Vrati k dane matici matici inversni
-        
-           Matice pom = new Matice(this.radky, this.sloupce);//Vytvori pomocnou matici
-           for (int i = 0; i < this.radky; i++) {
-               System.arraycopy(this.matice[i], 0, pom.matice[i], 0, this.sloupce);
+
+        Matice pom = new Matice(this.radky, this.sloupce);//Vytvori pomocnou matici
+        for (int i = 0; i < this.radky; i++) {
+            System.arraycopy(this.matice[i], 0, pom.matice[i], 0, this.sloupce);
         }
-            Matice invers = new Matice(this.radky, this.sloupce);//Vytvori jednotkovou matici a pomoci GEM ji upravy na inversni k zadane matici
-            for (int i = 0; i < invers.radky; i++) {
-                for (int j = 0; j < invers.sloupce; j++) {
-                    if (i == j) {
-                        invers.matice[i][j] = 1;
+        Matice invers = new Matice(this.radky, this.sloupce);//Vytvori jednotkovou matici a pomoci GEM ji upravy na inversni k zadane matici
+        for (int i = 0; i < invers.radky; i++) {
+            for (int j = 0; j < invers.sloupce; j++) {
+                if (i == j) {
+                    invers.matice[i][j] = 1;
+                } else {
+                    invers.matice[i][j] = 0;
+                }
+            }
+        }
+        for (int dvakrat = 0; dvakrat < 2; dvakrat++) {//Upravy Gaussem, transponuje, znovu upravi Gaussem a znovu transponuje
+            for (int i = 0; i < pom.radky; i++) {//Upravy stejne jako v Gauss(), zaroven upravuje jednotkovou matici stejnymi upravami
+                for (int k = 1; k + i < pom.radky; k++) {
+                    if (pom.matice[i][i] == 0) {
+                        invers.prohodRadky(i, k + i);
+                        pom.prohodRadky(i, k + i);
                     } else {
-                        invers.matice[i][j] = 0;
+                        break;
                     }
                 }
-            }
-            for (int dvakrat = 0; dvakrat < 2; dvakrat++) {//Upravy Gaussem, transponuje, znovu upravi Gaussem a znovu transponuje
-                for (int i = 0; i < pom.radky; i++) {//Upravy stejne jako v Gauss(), zaroven upravuje jednotkovou matici stejnymi upravami
-                    for (int k = 1; k + i < pom.radky; k++) {
-                        if (pom.matice[i][i] == 0) {
-                            invers.prohodRadky(i, k + i);
-                            pom.prohodRadky(i, k + i);
-                        } else {
-                            break;
-                        }
-                    }
-                    if (pom.matice[i][i] != 1) {
-                        invers.vynasobRadek(1 / pom.matice[i][i], i);
-                        pom.vynasobRadek(1 / pom.matice[i][i], i);
-                    }
-                    for (int j = 1; i + j < pom.radky; j++) {
-                        invers.prictiNasobekRadku(-pom.matice[i + j][i], i, i + j);
-                        pom.prictiNasobekRadku(-pom.matice[i + j][i], i, i + j);
-                    }
+                if (pom.matice[i][i] != 1) {
+                    invers.vynasobRadek(1 / pom.matice[i][i], i);
+                    pom.vynasobRadek(1 / pom.matice[i][i], i);
                 }
-                invers.transponuj();
-                pom.transponuj();
+                for (int j = 1; i + j < pom.radky; j++) {
+                    invers.prictiNasobekRadku(-pom.matice[i + j][i], i, i + j);
+                    pom.prictiNasobekRadku(-pom.matice[i + j][i], i, i + j);
+                }
             }
-            return invers;
+            invers.transponuj();
+            pom.transponuj();
         }
-    
-    public void ulozMatici(String nazev) throws IOException {
-             FileOutputStream fos = new FileOutputStream(nazev +".txt"); 
-             DataOutputStream dos = new DataOutputStream(fos); 
-        
-             dos.writeInt(this.radky);//Ulozi Matici jako dva Integery (Sloupce a Radky) a Sloupce*Radky Doubleu
-             dos.writeInt(this.sloupce);
-             
-             for(int i = 0;i < this.radky;i++){
-                 for(int j = 0;j < this.sloupce;j++){
-                     dos.writeDouble(this.matice[i][j]);
-                 }
-             }
-                                 
-             dos.close();
-             fos.close();
+        return invers;
     }
-    
-    
+
+    public void ulozMatici(String nazev) throws IOException {
+        FileOutputStream fos = new FileOutputStream(nazev + ".txt");
+        DataOutputStream dos = new DataOutputStream(fos);
+
+        dos.writeInt(this.radky);//Ulozi Matici jako dva Integery (Sloupce a Radky) a Sloupce*Radky Doubleu
+        dos.writeInt(this.sloupce);
+
+        for (int i = 0; i < this.radky; i++) {
+            for (int j = 0; j < this.sloupce; j++) {
+                dos.writeDouble(this.matice[i][j]);
+            }
+        }
+
+        dos.close();
+        fos.close();
+    }
+
+    public Matice nactiMatici(String s) throws IOException { //Nacita matici ze souboru zadaneho nazvu
+
+        try {
+            FileInputStream fis = new FileInputStream(s + ".txt");
+            DataInputStream dis = new DataInputStream(fis);
+            int a = dis.readInt();
+            int b = dis.readInt();
+            Matice nova = new Matice(a, b);//Po precteni poctu Radku a Sloupcu vytvori Matici
+
+            for (int i = 0; i < a; i++) {//Nacita do Matice ulozene hodnoty
+                for (int j = 0; j < b; j++) {
+                    nova.setCislo(dis.readDouble(), i, j);
+                }
+            }
+            dis.close();
+            fis.close();
+            return nova;
+        } catch (FileNotFoundException e) {
+            System.out.println("Soubor neexistuje.");
+            throw e;
+        }
+
+    }
 }
