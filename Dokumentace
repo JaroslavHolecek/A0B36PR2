@@ -1,12 +1,39 @@
-Maticovy kalkulator
+Maticový kalkulátor
+
+Maticový kalkulátor je program, který umožňuje výpočty s maticemi - sčítání, násobení, Gaussovu eliminační metodu, 
+inversní matici, transponovanou matici, ukládání matic do souboru a ukládání mezivýpočtů do dynamického seznamu za běhu 
+programu.
+Program má grafické uživatelské prostředí.
 
 Hlavní třídy:
 
-Grafika - 
+Grafika - Zajišťuje běh programu a využívá ostatní třídy pro vytváření komponent kalkulátoru.
+          Obsahuje veškeré části (okna, tabulky, matice, tlačítka) programu a pomocí vnitřních tříd zajišťuje také
+          obsluhu událostí.
+          
+          Má také jednu funkci pro ulození matice do souboru.
 
-Seznam - 
+Seznam - Po dobu běhu programu do něj lze ukládat neomezené množství matic.
+         Je implementovám jako obousměrný spojový seznam. Matice se ukládají na konec seznamu, při odebírání se
+         "počítají" zpředu. 
+         Jednotlivé prvky seznamu implementovány pomocí vnitřní třídy - Prvek
+         
+         Funkce: int pridejMatici(Matice) - přidá Prvek s Maticí na konec seznamu a vrátí pořadí Prvku v seznamu.
+                 Matice getMatice(int) - vrátí Matici na zadaném pořadí v seznamu
+                 
+Matice - Matice jsou v programu reprezentovány jako dva Integery - počet řádek a sloupců a dvourozměrného pole Doubleů
+         
+         Funkce: Matice secti(Matice) - vrátí součet dvou Matic
+                 Matice vynasobZprava(Matice) - vrátí vynasobené matice
+                 double determinant() - vrátí determinant Matice
+                 void transponuj() - transponuje Matici
+                 void gauss() - provede Gaussovu eliminacni metodu
+                 Matice inversni() - vrátí Matici inversní
+                 void ulozMatici(String) - ulozi Matici do souboru pod zadaným názvem
+                 Matice nactiMatici(String) - nacte Matici ze souboru s daným názvem
+        
+Další třídy (např.: Tlacitka, NacitaciOkna, SeznamoveVyjimky atp.) které reprezentují jednotlivé součásti grafické
+části programu. Tyto části jsou oproti základním grafickým komponentám (JButton, JPanel atp.) rozšířeny o propojení mezi
+jednotlivými komponentami.
 
-Matice -
-
-Funkce:
 
