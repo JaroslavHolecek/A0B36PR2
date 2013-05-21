@@ -371,7 +371,7 @@ public class Grafika extends JFrame {//Samotne zpracovani kalkulatoru
 
                 }
             }catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Chybny format cisla", "Chyba", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Nezadano cislo", "Chyba", JOptionPane.ERROR_MESSAGE);
             } catch (SeznamoveVyjimky sv) {
                 JOptionPane.showMessageDialog(null, sv.vypis, "Chyba", JOptionPane.ERROR_MESSAGE);
             }  catch (Exception e) {
