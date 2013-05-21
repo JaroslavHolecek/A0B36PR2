@@ -283,8 +283,12 @@ public class Grafika extends JFrame {//Samotne zpracovani kalkulatoru
 
             } catch (JTextFieldVyjimky v) {
                 JOptionPane.showMessageDialog(null, v.toString(), "Chyba", JOptionPane.ERROR_MESSAGE);
-
+            } catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Chyba v udaji", "Chyba", JOptionPane.ERROR_MESSAGE);
+            } catch(ArrayIndexOutOfBoundsException e){
+                JOptionPane.showMessageDialog(null, "Nelze provest.", "Chyba", JOptionPane.ERROR_MESSAGE);
             }
+                                
         }
     }
 
@@ -315,11 +319,13 @@ public class Grafika extends JFrame {//Samotne zpracovani kalkulatoru
                         break;
 
                 }
+            }catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Nezadano cislo", "Chyba", JOptionPane.ERROR_MESSAGE);
             } catch (JTextFieldVyjimky v) {
                 JOptionPane.showMessageDialog(null, v.toString(), "Chyba", JOptionPane.ERROR_MESSAGE);
 
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Proste chyba", "Zatracena chyba Chyba", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Chyba v udaji", "Chyba", JOptionPane.ERROR_MESSAGE);
             }
 
         }
@@ -364,11 +370,11 @@ public class Grafika extends JFrame {//Samotne zpracovani kalkulatoru
                         break;
 
                 }
+            }catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Chybny format cisla", "Chyba", JOptionPane.ERROR_MESSAGE);
             } catch (SeznamoveVyjimky sv) {
                 JOptionPane.showMessageDialog(null, sv.vypis, "Chyba", JOptionPane.ERROR_MESSAGE);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Chybny format cisla", "Chyba", JOptionPane.ERROR_MESSAGE);
-            } catch (Exception e) {
+            }  catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Chyba pri nacitani ze seznamu.", "Chyba", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -401,6 +407,10 @@ public class Grafika extends JFrame {//Samotne zpracovani kalkulatoru
                         break;
 
                 }
+            }catch (NumberFormatException v) {
+                JOptionPane.showMessageDialog(null, "Nezadano cislo", "Chyba", JOptionPane.ERROR_MESSAGE);
+            }catch (NullPointerException v) {
+                JOptionPane.showMessageDialog(null, "Chyba v udaji", "Chyba", JOptionPane.ERROR_MESSAGE);
             } catch (JTextFieldVyjimky v) {
                 JOptionPane.showMessageDialog(null, v.toString(), "Chyba", JOptionPane.ERROR_MESSAGE);
             } catch (IOException e) {
