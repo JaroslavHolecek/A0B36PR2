@@ -283,12 +283,14 @@ public class Grafika extends JFrame {//Samotne zpracovani kalkulatoru
 
             } catch (JTextFieldVyjimky v) {
                 JOptionPane.showMessageDialog(null, v.toString(), "Chyba", JOptionPane.ERROR_MESSAGE);
-            } catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Chyba v udaji", "Chyba", JOptionPane.ERROR_MESSAGE);
-            } catch(ArrayIndexOutOfBoundsException e){
+            } catch (ArrayIndexOutOfBoundsException e) {
                 JOptionPane.showMessageDialog(null, "Nelze provest.", "Chyba", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception e) {
             }
-                                
+            JOptionPane.showMessageDialog(null, "Vypocteno", "Hotovo", JOptionPane.INFORMATION_MESSAGE);
+
         }
     }
 
@@ -319,7 +321,7 @@ public class Grafika extends JFrame {//Samotne zpracovani kalkulatoru
                         break;
 
                 }
-            }catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Nezadano cislo", "Chyba", JOptionPane.ERROR_MESSAGE);
             } catch (JTextFieldVyjimky v) {
                 JOptionPane.showMessageDialog(null, v.toString(), "Chyba", JOptionPane.ERROR_MESSAGE);
@@ -337,9 +339,9 @@ public class Grafika extends JFrame {//Samotne zpracovani kalkulatoru
         public void actionPerformed(ActionEvent ae) {
             Tlacitka t = (Tlacitka) ae.getSource();
             String s = t.displej.getName();
+           try {
             int cislo = Integer.parseInt(JOptionPane.showInputDialog(null, "Zadej cislo matice:", "Nacteni ze seznamu", JOptionPane.QUESTION_MESSAGE));
-
-            try {
+            
                 switch (s) {
                     case "Prvni":
                         prvni.removeAll();
@@ -370,11 +372,11 @@ public class Grafika extends JFrame {//Samotne zpracovani kalkulatoru
                         break;
 
                 }
-            }catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Nezadano cislo", "Chyba", JOptionPane.ERROR_MESSAGE);
             } catch (SeznamoveVyjimky sv) {
                 JOptionPane.showMessageDialog(null, sv.vypis, "Chyba", JOptionPane.ERROR_MESSAGE);
-            }  catch (Exception e) {
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Chyba pri nacitani ze seznamu.", "Chyba", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -407,9 +409,9 @@ public class Grafika extends JFrame {//Samotne zpracovani kalkulatoru
                         break;
 
                 }
-            }catch (NumberFormatException v) {
+            } catch (NumberFormatException v) {
                 JOptionPane.showMessageDialog(null, "Nezadano cislo", "Chyba", JOptionPane.ERROR_MESSAGE);
-            }catch (NullPointerException v) {
+            } catch (NullPointerException v) {
                 JOptionPane.showMessageDialog(null, "Chyba v udaji", "Chyba", JOptionPane.ERROR_MESSAGE);
             } catch (JTextFieldVyjimky v) {
                 JOptionPane.showMessageDialog(null, v.toString(), "Chyba", JOptionPane.ERROR_MESSAGE);
@@ -460,7 +462,9 @@ public class Grafika extends JFrame {//Samotne zpracovani kalkulatoru
                 }
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Chyba pri nacitani ze souboru - soubor neexistuje.", "Chyba", JOptionPane.ERROR_MESSAGE);
-            }
+            } catch (Exception e){
+              JOptionPane.showMessageDialog(null, "Chyba pri vypisu matice.", "Chyba", JOptionPane.ERROR_MESSAGE);
+        }
         }
     }
 
@@ -511,13 +515,13 @@ public class Grafika extends JFrame {//Samotne zpracovani kalkulatoru
         hlavni.add(druha);
 
         potvrd1 = new Tlacitka("OK", prvni, null, 0, 0);             //Tlacitka pro vytvoreni tabulek ze zadanych radku a sloupcu
-        this.potvrd1.setBounds(10, 30, 30, 30);
+        this.potvrd1.setBounds(5, 30, 60, 30);
         this.potvrd1.setBackground(Color.GREEN);
         this.potvrd1.addActionListener(new NaslouchacPotvrzeni());
         hlavni.add(potvrd1);
 
         potvrd2 = new Tlacitka("OK", druha, null, 0, 0);
-        this.potvrd2.setBounds(260, 30, 30, 30);
+        this.potvrd2.setBounds(255, 30, 60, 30);
         this.potvrd2.setBackground(Color.GREEN);
         this.potvrd2.addActionListener(new NaslouchacPotvrzeni());
         hlavni.add(potvrd2);
@@ -525,17 +529,17 @@ public class Grafika extends JFrame {//Samotne zpracovani kalkulatoru
         vysledek = new JPanel();                                    //Okno ve kterem je umistena tabuka vysledku
         vysledek.setName("Vysledek");
         vysledek.setLayout(new FlowLayout());
-        vysledek.setBounds(550, 70, 200, 200);
+        vysledek.setBounds(560, 70, 200, 200);
         hlavni.add(vysledek);
 
         radkyRovnase = new JLabel();                                //Okna indikujici pocet radek a sloupcu vysledne matice
-        radkyRovnase.setBounds(510, 70, 30, 30);
+        radkyRovnase.setBounds(520, 70, 30, 30);
         radkyRovnase.setBackground(Color.ORANGE);
         radkyRovnase.setHorizontalAlignment(JLabel.RIGHT);
         hlavni.add(radkyRovnase);
 
         sloupceRovnase = new JLabel();
-        sloupceRovnase.setBounds(510, 110, 30, 30);
+        sloupceRovnase.setBounds(520, 110, 30, 30);
         sloupceRovnase.setBackground(Color.ORANGE);
         sloupceRovnase.setHorizontalAlignment(JLabel.RIGHT);
         hlavni.add(sloupceRovnase);
@@ -547,71 +551,71 @@ public class Grafika extends JFrame {//Samotne zpracovani kalkulatoru
 
         operace = new JPanel();                                 //Okno ve kterem jsou tlacitka pro zadavani operaci
         operace.setLayout(new GridLayout(2, 3));
-        operace.setBounds(210, 330, 120, 60);
+        operace.setBounds(180, 330, 180, 60);
         hlavni.add(operace);
 
 
         rovnase = new Tlacitka("=", vysledek, null, 0, 0);           //Tlacitko spoustejici vypocet
-        rovnase.setBounds(510, 155, 30, 30);
+        rovnase.setBounds(505, 155, 50, 30);
         this.rovnase.addActionListener(new NaslouchacRovnase());
         hlavni.add(rovnase);
 
         seznam1nacti = new Tlacitka("Nacist ze seznamu", prvni, null, 1, 1);         //Tlacitka pro ukaldani a nacitani ze seznamu/souboru
-        seznam1nacti.setBounds(110, 10, 80, 20);
+        seznam1nacti.setBounds(75, 10, 150, 20);
         seznam1nacti.setText("Nacist ze seznamu");
         seznam1nacti.addActionListener(new NaslouchacNacteniZeSeznamu());
         hlavni.add(seznam1nacti);
 
         seznam1uloz = new Tlacitka("Ulozit do seznamu", prvni, null, 2, 1);
-        seznam1uloz.setBounds(110, 280, 80, 20);
+        seznam1uloz.setBounds(75, 280, 150, 20);
         seznam1uloz.setText("Ulozit do seznamu");
         seznam1uloz.addActionListener(new NaslouchacUlozeniDoSeznamu());
         hlavni.add(seznam1uloz);
 
         soubor1nacti = new Tlacitka("Nacist ze souboru", prvni, null, 1, 2);
-        soubor1nacti.setBounds(110, 35, 80, 20);
+        soubor1nacti.setBounds(75, 35, 150, 20);
         soubor1nacti.setText("Nacist ze souboru");
         soubor1nacti.addActionListener(new NaslouchacNacteniZeSouboru());
         hlavni.add(soubor1nacti);
 
         soubor1uloz = new Tlacitka("Ulozit do souboru", prvni, null, 2, 2);
-        soubor1uloz.setBounds(110, 305, 80, 20);
+        soubor1uloz.setBounds(75, 305, 150, 20);
         soubor1uloz.setText("Ulozit do souboru");
         soubor1uloz.addActionListener(new NaslouchacUlozeniDoSouboru());
         hlavni.add(soubor1uloz);
 
         seznam2nacti = new Tlacitka("Nacist ze seznamu", druha, null, 1, 1);
-        seznam2nacti.setBounds(360, 10, 80, 20);
+        seznam2nacti.setBounds(325, 10, 150, 20);
         seznam2nacti.setText("Nacist ze seznamu");
         seznam2nacti.addActionListener(new NaslouchacNacteniZeSeznamu());
         hlavni.add(seznam2nacti);
 
         seznam2uloz = new Tlacitka("Ulozit do seznamu", druha, null, 2, 1);
-        seznam2uloz.setBounds(360, 280, 80, 20);
+        seznam2uloz.setBounds(325, 280, 150, 20);
         seznam2uloz.setText("Ulozit do seznamu");
         seznam2uloz.addActionListener(new NaslouchacUlozeniDoSeznamu());
         hlavni.add(seznam2uloz);
 
         soubor2nacti = new Tlacitka("Nacist ze souboru", druha, null, 1, 2);
-        soubor2nacti.setBounds(360, 35, 80, 20);
+        soubor2nacti.setBounds(325, 35, 150, 20);
         soubor2nacti.setText("Nacist ze souboru");
         soubor2nacti.addActionListener(new NaslouchacNacteniZeSouboru());
         hlavni.add(soubor2nacti);
 
         soubor2uloz = new Tlacitka("Ulozit do souboru", druha, null, 2, 2);
-        soubor2uloz.setBounds(360, 305, 80, 20);
+        soubor2uloz.setBounds(325, 305, 150, 20);
         soubor2uloz.setText("Ulozit do souboru");
         soubor2uloz.addActionListener(new NaslouchacUlozeniDoSouboru());
         hlavni.add(soubor2uloz);
 
         seznam3uloz = new Tlacitka("Ulozit do seznamu", vysledek, null, 2, 1);
-        seznam3uloz.setBounds(610, 280, 80, 20);
+        seznam3uloz.setBounds(575, 280, 150, 20);
         seznam3uloz.setText("Ulozit do seznamu");
         seznam3uloz.addActionListener(new NaslouchacUlozeniDoSeznamu());
         hlavni.add(seznam3uloz);
 
         soubor3uloz = new Tlacitka("Ulozit do souboru", vysledek, null, 2, 2);
-        soubor3uloz.setBounds(610, 305, 80, 20);
+        soubor3uloz.setBounds(575, 305, 150, 20);
         soubor3uloz.setText("Ulozit do souboru");
         soubor3uloz.addActionListener(new NaslouchacUlozeniDoSouboru());
         hlavni.add(soubor3uloz);
